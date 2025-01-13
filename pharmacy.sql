@@ -223,3 +223,77 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`userid`, `username`, `passwordone`, `passwordtwo`, `fullname`, `email`, `mobilephone`) VALUES
 (1, 'lasha', 'bca4b46721c10a119766ad9e2241d8b7', 'bca4b46721c10a119766ad9e2241d8b7', 'lasha badashvili', 'lashacst@gmail.com', '593308455'),
 (2, 'nika', 'bca4b46721c10a119766ad9e2241d8b7', 'bca4b46721c10a119766ad9e2241d8b7', 'nika badashvili', 'nika@gmail.com', '593308455');
+
+
+-- --------------------------------------------------------
+
+-- Table structure for table `suppliers`
+CREATE TABLE IF NOT EXISTS `suppliers` (
+  `supplierID` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(200) NOT NULL,
+  `contact` VARCHAR(100) NOT NULL,
+  `email` VARCHAR(150) NOT NULL,
+  `address` TEXT NOT NULL,
+  PRIMARY KEY (`supplierID`)
+);
+
+-- --------------------------------------------------------
+
+-- Table structure for table `orders`
+CREATE TABLE IF NOT EXISTS `orders` (
+  `orderID` INT(11) NOT NULL AUTO_INCREMENT,
+  `supplierID` INT(11) NOT NULL,
+  `orderDate` DATE NOT NULL,
+  `deliveryDate` DATE DEFAULT NULL,
+  `status` ENUM('Pending', 'Delivered', 'Cancelled') DEFAULT 'Pending',
+  `totalAmount` FLOAT NOT NULL,
+  PRIMARY KEY (`orderID`),
+  FOREIGN KEY (`supplierID`) REFERENCES `suppliers`(`supplierID`)
+);
+
+-- --------------------------------------------------------
+
+-- Table structure for table `sales`
+CREATE TABLE IF NOT EXISTS `sales` (
+  `saleID` INT(11) NOT NULL AUTO_INCREMENT,
+  `billID` INT(11) NOT NULL,
+  `productID` INT(11) NOT NULL,
+  `quantity` INT NOT NULL,
+  `saleDate` DATE NOT NULL,
+  `totalPrice` FLOAT NOT NULL,
+  PRIMARY KEY (`saleID`),
+  FOREIGN KEY (`billID`) REFERENCES `bill`(`billID`),
+  FOREIGN KEY (`productID`) REFERENCES `products`(`productID`)
+);
+
+-- --------------------------------------------------------
+
+-- Table structure for table `reports`
+CREATE TABLE IF NOT EXISTS `reports` (
+  `reportID` INT(11) NOT NULL AUTO_INCREMENT,
+  `reportType` ENUM('Sales', 'Inventory', 'Orders') NOT NULL,
+  `generatedDate` DATE NOT NULL,
+  `details` TEXT NOT NULL,
+  PRIMARY KEY (`reportID`)
+);
+
+
+-- Sample data for table `suppliers`
+INSERT INTO `suppliers` (`name`, `contact`, `email`, `address`) VALUES
+('MedSupplies Co.', '123456789', 'contact@medsupplies.com', '123 Main St, Cityville'),
+('PharmaDistributors', '987654321', 'info@pharmadistributors.com', '456 Elm St, Townsville');
+
+-- Sample data for table `orders`
+INSERT INTO `orders` (`supplierID`, `orderDate`, `deliveryDate`, `status`, `totalAmount`) VALUES
+(1, '2025-01-01', '2025-01-05', 'Delivered', 500.00),
+(2, '2025-01-03', NULL, 'Pending', 250.00);
+
+-- Sample data for table `sales`
+INSERT INTO `sales` (`billID`, `productID`, `quantity`, `saleDate`, `totalPrice`) VALUES
+(1, 101, 2, '2025-01-10', 40.00),
+(2, 102, 1, '2025-01-11', 20.00);
+
+-- Sample data for table `reports`
+INSERT INTO `reports` (`reportType`, `generatedDate`, `details`) VALUES
+('Sales', '2025-01-10', 'Daily sales report showing a total revenue of $60.00'),
+('Inventory', '2025-01-09', 'Inventory levels updated after restocking from suppliers');
