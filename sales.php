@@ -158,13 +158,13 @@
                     <!-- _____ -->
                     <div class="col-md-12 col-lg-12">
                         <div class="card">
-                            <div class="card-header">Basic DataTables Table</div>
+                            <div class="card-header">Sales records</div>
                             <div class="card-body">
                                 <p class="card-title"></p>
                                 <table class="table table-hover" id="dataTables-example" width="100%">
                                     <thead>
                                         <tr>
-                                            <th>Bill ID</th>
+                                            <th>Sales ID</th>
                                             <th>Bill ID</th>
                                             <th>Product ID</th>
                                             <th>Quantity</th>
