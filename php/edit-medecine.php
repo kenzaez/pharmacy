@@ -1,39 +1,32 @@
 <?php
-session_start();
-include 'connect.php';
+require_once 'connect.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
-    // Sécurisation des entrées utilisateur
-    $name = trim(htmlspecialchars($_POST['name']));
-    $manufacturer = trim(htmlspecialchars($_POST['manufacturer']));
-    $price = floatval($_POST['price']);
-    $stock = intval($_POST['stock']);
-    $productID = intval($_POST['id']);  // Assuming you have the product ID to update
-
-    // Préparation de la requête SQL pour la mise à jour
-    $sql = "UPDATE Products SET productName = ?, productDetails = ?, quantity = ?, Price = ? WHERE productID = ?";
-
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $productID = $_POST['productID'];
+    $productName = $_POST['name'];
+    $manufacturer = $_POST['manufacturer'];
+    $price = $_POST['price'];
+    $stock = $_POST['stock'];
+    
+   
+    $sql = 'UPDATE Products SET productName = ?, productDetails = ?, Price = ?, quantity = ? WHERE productID = ?';
+    
     if ($stmt = $conn->prepare($sql)) {
-        // Associer les valeurs aux paramètres
-        $stmt->bind_param("ssiii", $name, $manufacturer, $stock, $price, $id);
-
-        // Exécuter la requête
+        $stmt->bind_param('ssdii', $productName, $manufacturer, $price, $stock, $productID);
+        
         if ($stmt->execute()) {
-            $_SESSION['messageEdit'] = "Produit mis à jour avec succès !";
+            $_SESSION['messageEdit'] = 'Product updated successfully!';
+            $_SESSION['popupEdit'] = true;
         } else {
-            $_SESSION['messageEdit'] = "Erreur lors de la mise à jour : " . $stmt->error;
-            error_log("SQL Error: " . $stmt->error);  // Log the error if the query fails
+            $_SESSION['messageEdit'] = 'Failed to update product.';
+            $_SESSION['popupEdit'] = true;
         }
-
+        
         $stmt->close();
-    } else {
-        $_SESSION['messageEdit'] = "Erreur lors de la préparation de la requête.";
-        error_log("SQL Error: " . $conn->error);  // Log the error if the prepare fails
     }
+    
+    
+    header('Location: medicine.php');
+    exit();
 }
-
-// Close connection and redirect (outside the if block)
-$conn->close();
-header("Location: medicine.php");
-exit();
 ?>

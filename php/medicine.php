@@ -4,7 +4,7 @@ require_once 'search-bar.php';
 session_start();
 
 
-$sql = 'SELECT productID, productName, productDetails, quantity, Price FROM Products';
+$sql = 'SELECT productID, productName, productDetails, quantity, Price, productIMG, productIMGType FROM Products';
 
 $stmt = $conn->stmt_init();
 
@@ -12,7 +12,7 @@ if ($stmt->prepare($sql)) {
     $stmt->execute();
     
     // Bind the results
-    $stmt->bind_result($productID, $productName, $productDetails, $quantity, $Price);
+    $stmt->bind_result($productID, $productName, $productDetails, $quantity, $Price, $productIMG, $productIMGType);
     
     // Store result (optional, only needed if you check `num_rows`)
     $stmt->store_result();
@@ -44,35 +44,38 @@ if ($stmt->prepare($sql)) {
     <link href="../assets/css/master.css" rel="stylesheet">
 
     <style>
-        /* Popup Form Styles */
+      
         .popup-form {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            align-items: center;
-            justify-content: center;
-        }
+    display: none; /* Initially hidden */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+}
 
-        .form-container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 5px;
-            text-align: center;
-            width: 400px;
-        }
+.form-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    width: 400px;
+    position: relative; /* Ensure the close button is placed properly */
+}
 
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 30px;
-            cursor: pointer;
-        }
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    cursor: pointer;
+}
 
+
+       
         input {
             width: 100%;
             padding: 10px;
@@ -214,7 +217,7 @@ if ($stmt->prepare($sql)) {
                             <th>Image</th>
                             <th>Medicine Name</th>
                             <th>Manufacturer</th>
-                            <th>Price ($)</th>
+                            <th>Price (MAD)</th>
                             <th>Stock</th>
                             <th>Actions</th>
                         </tr>
@@ -235,7 +238,7 @@ if ($stmt->prepare($sql)) {
 
                                         $imageType = $productIMGType; 
                                     ?>
-                                        <img src="data:<?php echo $imageType; ?>;base64,<?php echo $base64Image; ?>" width="100px" height="100px" alt="Product Image">
+                                         <img src="data:<?php echo $imageType; ?>;base64,<?php echo $base64Image; ?>" width="100px" height="100px" alt="Product Image">
                                     <?php 
                                     } else { 
                                     ?>
@@ -251,10 +254,10 @@ if ($stmt->prepare($sql)) {
                     <td><?= htmlspecialchars($Price) ?></td>
                     <td><?= htmlspecialchars($quantity) ?></td>
                     <td>
-                        <a href="medicine.php?id=<?= $productID ?>">
-                            <button class='btn btn-outline-primary'><i class='fas fa-edit'></i></button>
-                        </a>
-                        <button class='btn btn-outline-primary'><i class='fas fa-eye'></i></button>
+                
+                            <button class='openEditFormBtn btn btn-outline-primary' id="openEditFormBtn"><i class='fas fa-edit'></i></button>
+                       
+                            <button class='btn-view btn btn-outline-primary'><i class='fas fa-eye'></i></button>
 
                         <form action="delete-medecine.php" method="GET" style="display:inline;">
                             <input type="hidden" name="id" value="<?= $productID ?>">
@@ -269,8 +272,7 @@ if ($stmt->prepare($sql)) {
                     </tbody>
                 </table>
 
-               
-                
+                       
                 <div id="popupForm" class="popup-form" style="display: <?= isset($_SESSION['popup']) && $_SESSION['popup'] ? 'flex' : 'none' ?>;">
     
                 <div class="form-container">
@@ -292,22 +294,20 @@ if ($stmt->prepare($sql)) {
 <?php endif; ?>
 
 <form method="POST" action="add-medecine.php" enctype="multipart/form-data">
+<img src="grandmedicine.png" width="150px" height="150px" alt="">
     <div class="form-group">
-        <input type="text" name="name" class="form-control" placeholder="Medicine Name" value="<?= htmlspecialchars($productName) ?>" required>
+        <input type="text" name="name" class="form-control" placeholder="Medicine Name"required>
     </div>
     <div class="form-group">
-        <input type="text" name="manufacturer" class="form-control" placeholder="Manufacturer" value="<?= htmlspecialchars($productDetails) ?>" required>
+        <input type="text" name="manufacturer" class="form-control" placeholder="Manufacturer" required>
     </div>
     <div class="form-group">
-        <input type="number" name="price" class="form-control" placeholder="Price" step="0.01" value="<?= htmlspecialchars($Price) ?>" required>
+        <input type="number" name="price" class="form-control" placeholder="Price" step="0.01" required>
     </div>
     <div class="form-group">
-        <input type="number" name="stock" class="form-control" placeholder="Stock" value="<?= htmlspecialchars($quantity) ?>" required>
+        <input type="number" name="stock" class="form-control" placeholder="Stock" required>
     </div>
-    <div class="form-group">
-        <input type="file" name="image" class="form-control" required>
-    </div>
-    <button type="submit" name="submit" class="btn btn-outline-primary mb-2">
+    <button type="submit" name="submit" class="btn btn-outline-primary">
         <i class="fas fa-plus"></i> Add Medicine
     </button>
 </form>
@@ -319,7 +319,49 @@ if ($stmt->prepare($sql)) {
         </div>
     </div>
 
-  <?php require_once 'edit-form.php'; ?>
+<!-- Edit Popup Form -->
+<div id="editPopupForm" class="popup-form">
+    
+    <div class="form-container">
+    <img src="grandmedicine.png" width="150px" height="150px" alt="">
+        <span id="closeEditFormBtn" class="close-btn">&times;</span>
+        <form method="POST" action="edit-medecine.php">
+            <input type="hidden" name="productID" id="editProductID" value="">
+            <div class="form-group">
+                <input type="text" name="name" class="form-control" id="editProductName" placeholder="Medicine Name" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="manufacturer" class="form-control" id="editManufacturer" placeholder="Manufacturer" required>
+            </div>
+            <div class="form-group">
+                <input type="number" name="price" class="form-control" id="editPrice" placeholder="Price" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <input type="number" name="stock" class="form-control" id="editStock" placeholder="Stock" required>
+            </div>
+            <button type="submit" class="btn btn-outline-primary mb-2">
+                <i class="fas fa-edit"></i> Edit Medicine
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- View Product Popup Form -->
+<div id="viewPopupForm" class="popup-form">
+    <div class="form-container">
+        <span id="closeViewFormBtn" class="close-btn">&times;</span>
+        <div class="product-details">
+            <h4>Product Details</h4>
+            <p><strong>Product Name:</strong> <span id="viewProductName"></span></p>
+            <p><strong>Manufacturer:</strong> <span id="viewManufacturer"></span></p>
+            <p><strong>Price:</strong> MAD<span id="viewPrice"></span></p>
+            <p><strong>Stock:</strong> <span id="viewStock"></span></p>
+            <p><strong>Product Image:</strong></p>
+            <img id="viewProductImage" src="" alt="Product Image" width="200px" height="200px">
+        </div>
+    </div>
+</div>
+
 
 
     <script src="../assets/vendor/jquery/jquery.min.js"></script>
@@ -327,75 +369,105 @@ if ($stmt->prepare($sql)) {
     <script src="../assets/vendor/chartsjs/Chart.min.js"></script>
     <script src="../assets/js/dashboard-charts.js"></script>
     <script src="../assets/js/script.js"></script>
-
     <script>
-        
-        const searchContainer = document.getElementById('searchContainer');
-    const searchInput = document.getElementById('searchInput');
-    const searchIcon = document.getElementById('searchIcon');
+    // Get elements for add form
+const openFormBtn = document.getElementById('openFormBtn');
+const closeFormBtn = document.getElementById('closeFormBtn');
+const popupForm = document.getElementById('popupForm');
 
-    searchIcon.addEventListener('click', () => {
-        searchContainer.classList.toggle('active');
-        searchInput.focus();
+// Get elements for edit form
+const openEditFormBtns = document.querySelectorAll('.openEditFormBtn'); // Modify to handle multiple edit buttons
+const closeEditFormBtn = document.getElementById('closeEditFormBtn');
+const editPopupForm = document.getElementById('editPopupForm');
+
+// Open the add form
+openFormBtn.addEventListener('click', () => {
+    popupForm.style.display = 'flex';
+});
+
+// Close the add form
+closeFormBtn.addEventListener('click', () => {
+    popupForm.style.display = 'none';
+});
+window.addEventListener('click', (e) => {
+    if (e.target === popupForm) {
+        popupForm.style.display = 'none';
+    }
+   
+});
+setTimeout(function() {
+    var message = document.getElementById('deleteMessage');
+    if (message) {
+        message.style.display = 'none';
+    }
+}, 5000);
+// Open the edit form for the selected product
+openEditFormBtns.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+        const productRow = e.target.closest('tr');
+        const productID = productRow.querySelector('td').textContent;
+        const productName = productRow.querySelectorAll('td')[2].textContent;
+        const manufacturer = productRow.querySelectorAll('td')[3].textContent;
+        const price = productRow.querySelectorAll('td')[4].textContent;
+        const stock = productRow.querySelectorAll('td')[5].textContent;
+
+        document.getElementById('editProductID').value = productID;
+        document.getElementById('editProductName').value = productName;
+        document.getElementById('editManufacturer').value = manufacturer;
+        document.getElementById('editPrice').value = price;
+        document.getElementById('editStock').value = stock;
+
+        editPopupForm.style.display = 'flex';
     });
+});
 
-    // Close the search bar when the user clicks outside
-    window.addEventListener('click', (event) => {
-        if (!searchContainer.contains(event.target)) {
-            searchContainer.classList.remove('active');
-        }
+// Close the edit form
+closeEditFormBtn.addEventListener('click', () => {
+    editPopupForm.style.display = 'none';
+});
+window.addEventListener('click', (e) => {
+    if (e.target === editPopupForm) {
+        editPopupForm.style.display = 'none';
+    }
+});
+// Get elements for the view form
+const openViewFormBtns = document.querySelectorAll('.btn-view'); // Modify to handle multiple view buttons
+const closeViewFormBtn = document.getElementById('closeViewFormBtn');
+const viewPopupForm = document.getElementById('viewPopupForm');
+
+// Open the view form for the selected product
+openViewFormBtns.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+        const productRow = e.target.closest('tr');
+        const productID = productRow.querySelector('td').textContent;
+        const productName = productRow.querySelectorAll('td')[2].textContent;
+        const manufacturer = productRow.querySelectorAll('td')[3].textContent;
+        const price = productRow.querySelectorAll('td')[4].textContent;
+        const stock = productRow.querySelectorAll('td')[5].textContent;
+        const imageSrc = productRow.querySelector('img').src;
+
+        document.getElementById('viewProductName').textContent = productName;
+        document.getElementById('viewManufacturer').textContent = manufacturer;
+        document.getElementById('viewPrice').textContent = price;
+        document.getElementById('viewStock').textContent = stock;
+        document.getElementById('viewProductImage').src = imageSrc;
+
+        viewPopupForm.style.display = 'flex';
     });
-        // Get elements
-        const openFormBtn = document.getElementById('openFormBtn');
-        const closeFormBtn = document.getElementById('closeFormBtn');
-        const popupForm = document.getElementById('popupForm');
+});
 
-        // Open the form
-        openFormBtn.addEventListener('click', () => {
-            popupForm.style.display = 'flex';
-        });
+// Close the view form
+closeViewFormBtn.addEventListener('click', () => {
+    viewPopupForm.style.display = 'none';
+});
+window.addEventListener('click', (e) => {
+    if (e.target === viewPopupForm) {
+        viewPopupForm.style.display = 'none';
+    }
+});
 
-        // Close the form
-        closeFormBtn.addEventListener('click', () => {
-            popupForm.style.display = 'none';
-        });
+</script>
 
-        // Close the form if clicked outside of the form
-        window.addEventListener('click', (e) => {
-            if (e.target === popupForm) {
-                popupForm.style.display = 'none';
-            }
-        });
-        
-        setTimeout(function() {
-            var message = document.getElementById('deleteMessage');
-            if (message) {
-                message.style.display = 'none';
-            }
-        }, 5000);
-        document.querySelectorAll(".btn-outline-primary .fa-edit").addEventListener("click", function() {
-        // button.parentElement.addEventListener("click", function() {
-        //     const row = this.closest("tr");
-        //     document.getElementById("editProductID").value = row.cells[0].textContent;
-        //     document.getElementById("editName").value = row.cells[2].textContent;
-        //     document.getElementById("editManufacturer").value = row.cells[3].textContent;
-        //     document.getElementById("editPrice").value = row.cells[4].textContent;
-        //     document.getElementById("editStock").value = row.cells[5].textContent;
-            document.getElementById("editPopupForm").style.display = "flex";
-        });
-    // });
-
-    document.getElementById("closeEditFormBtn").addEventListener("click", function() {
-        document.getElementById("editPopupForm").style.display = "none";
-    });
-    
-    window.addEventListener("click", function(e) {
-        if (e.target === document.getElementById("editPopupForm")) {
-            document.getElementById("editPopupForm").style.display = "none";
-        }
-    });
-
-    </script>
 
 </body>
 </html>
