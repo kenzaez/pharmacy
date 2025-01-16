@@ -22,13 +22,13 @@
             <div class="card">
                 <div class="card-body text-center">
                     <div class="mb-4">
-                        <img class="brand" src="assets/img/bootstraper-logo.png" alt="bootstraper logo">
+                        <img class="brand" src="logo.jpeg" alt=" logo" width="30%" height="30%">
                     </div>
                     <h6 class="mb-4 text-muted">Login to your account</h6>
                     <form action="" method="">
                         <div class="mb-3 text-start">
-                            <label for="email" class="form-label">Email address</label>
-                            <input type="email" class="form-control" placeholder="Enter your email" required>
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" placeholder="Enter your username" required>
                         </div>
                         <div class="mb-3 text-start">
                             <label for="password" class="form-label">Password</label>
@@ -44,8 +44,6 @@
                         </div>
                         <button class="btn btn-primary mb-4" style="width:100%">Login</button>
                     </form>
-                    <p class="mb-2 text-muted">Forgot password? <a href="forgot-password.html">Reset</a></p>
-                    <p class="mb-0 text-muted">Don't have account yet? <a href="signup.html">Signup</a></p>
                 </div>
             </div>
         </div>
