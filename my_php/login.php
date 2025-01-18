@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'php/connect.php'; // Include the database connection
+require_once '../php/connect.php'; // Include the database connection
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_SESSION['userid'] = $userid;
                 $_SESSION['fullname'] = $fullname;
                 $_SESSION['role'] = $userRole;
-                header("Location: dashboard.php");
+                header("Location: ../dashboard.php");
                 exit();
             } else {
                 $error = "Invalid password.";
@@ -45,8 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Login | Bootstrap Simple Admin Template</title>
-    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/css/auth.css" rel="stylesheet">
+    <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/css/auth.css" rel="stylesheet">
 </head>
 <body>
     <div class="wrapper">
@@ -81,8 +81,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         </div>
     </div>
-    <script src="assets/vendor/jquery/jquery.min.js"></script>
-    <script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../assets/vendor/bootstrap/js/bootstrap.min.js"></script>
     <script>
         setTimeout(function() {     var error = document.getElementById('error');
     if (error) {

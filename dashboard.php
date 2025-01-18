@@ -45,7 +45,7 @@ require_once 'php/connect.php';
                     <a href="sales.php"><i class="fas fa-money-check-dollar"></i> Sales </a>
                 </li>
                 <li>
-                    <a href="orders.php"><i class="fas fa-truck"></i>Orders </a>
+                    <a href="my_php/orders.php"><i class="fas fa-truck"></i>Orders </a>
                 </li>
                 <li>
                     <a href="php/staff.php"><i class="fas fa-user-tie"></i> Staff </a>
