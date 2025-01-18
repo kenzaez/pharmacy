@@ -206,7 +206,7 @@ INSERT INTO `Transactions` (`TransactionID`, `productPrice`, `productQuantity`, 
 -- Table structure for table `users`
 --
 
-CREATE TABLE IF NOT EXISTS `user` (
+CREATE TABLE IF NOT EXISTS `users` (
   `userid` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(200) NOT NULL,
   `passwordone` varchar(100) NOT NULL,
