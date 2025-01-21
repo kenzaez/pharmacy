@@ -1,27 +1,33 @@
 <?php
 require_once '../connect.php';
 session_start();
-
+//SETTING COOKIES TO TRACK THE VISITORS
+if (isset($_COOKIE['staff'])) {
+    $visitorCount = $_COOKIE['staff'] + 1;
+} else {
+    $visitorCount = 1;
+}
+setcookie("staff", $visitorCount, time() + 365 * 24 * 60 * 60, "/");
 // SQL query to fetch user data
 $sql = 'SELECT userid, username, fullname, email, mobilephone, userRole FROM users';
 
-$stmt = $conn->stmt_init(); // Initialize a prepared statement
+$stmt = $conn->stmt_init(); 
 
-if ($stmt->prepare($sql)) { // Check if the SQL statement is valid
-    $stmt->execute(); // Execute the query
+if ($stmt->prepare($sql)) {
+    $stmt->execute(); 
     
-    // Bind the results to variables
+   
     $stmt->bind_result($userid, $username, $fullname, $email, $mobilephone, $role);
     
-    $stmt->store_result(); // Store the result for row count check
+    $stmt->store_result(); 
 
-    // Check for execution errors
+ 
     if ($stmt->error) {
-        echo $stmt->errno . ": " . $stmt->error; // Display error message
-        exit(); // Stop script execution on error
+        echo $stmt->errno . ": " . $stmt->error; 
+        exit();
     }
 } else {
-    echo "SQL preparation error: " . $conn->error; // Display SQL preparation error
+    echo "SQL preparation error: " . $conn->error;
 }
 ?>
 
@@ -103,8 +109,8 @@ if ($stmt->prepare($sql)) { // Check if the SQL statement is valid
                             <button class='openEditFormBtn btn btn-outline-primary' id="openEditFormBtn"><i
                                     class='fas fa-edit'></i></button>
 
-                            <form action="delete-medecine.php" method="GET" style="display:inline;">
-                                <input type="hidden" name="id" value="<?= $productID ?>">
+                            <form action="delete-staff.php" method="GET" style="display:inline;">
+                                <input type="hidden" name="id" value="<?= $userid ?>">
                                 <button class="btn btn-outline-primary" type="submit"><i
                                         class="fas fa-trash-alt"></i></button>
                             </form>
