@@ -1,7 +1,14 @@
 <?php
 
     require_once '../php/connect.php';
+    session_start();
 
+    if (isset($_COOKIE['orders'])) {
+        $visitorCount = $_COOKIE['orders'] + 1;
+    } else {
+        $visitorCount = 1;
+    }
+    setcookie("orders", $visitorCount, time() + 365 * 24 * 60 * 60, "/");
 ?>
 <!doctype html>
 <html lang="en">
@@ -68,7 +75,7 @@
 
 <body>
     <div class="wrapper">
-        <?php include('../php/nav-bar.php'); ?>
+        <?php include('nav-bar.php'); ?>
             <!-- end of navbar navigation -->
             <div class="content">
                 <div class="container">
@@ -184,11 +191,13 @@
         </div>
     </div>
     </div>
-    <script src="assets/vendor/jquery/jquery.min.js"></script>
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/vendor/datatables/datatables.min.js"></script>
-    <script src="assets/js/initiate-datatables.js"></script>
-    <script src="assets/js/script.js"></script>
+ 
+
+    <script src="../../assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/vendor/chartsjs/Chart.min.js"></script>
+    <script src="../../assets/js/dashboard-charts.js"></script>
+    <script src="../../assets/js/script.js"></script>
     <script>
         // JavaScript for controlling the popup
         function openPopup() {

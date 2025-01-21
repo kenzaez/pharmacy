@@ -1,23 +1,29 @@
 <?php
-// Include database connection
-include('../connect.php');
+include '../connect.php';
 
-// Get the productID from the URL
-$productID = $_GET['id'];
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
 
-// Retrieve product data from the database
-$sql = "SELECT * FROM products WHERE productID = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $productID);
-$stmt->execute();
-$result = $stmt->get_result();
+    $sql = "SELECT productName, productDetails, quantity, Price, productIMG, productIMGType FROM Products WHERE productID = ?";
+    $stmt1 = $conn->prepare($sql);
 
-// Check if the product exists
-if ($result->num_rows > 0) {
-    $product = $result->fetch_assoc(); // Fetch product data
-} else {
-    echo "Product not found.";
-    exit;
+    if ($stmt1) {
+        $stmt1->bind_param('i', $id);
+        $stmt1->execute();
+        // Bind results to variables
+        $stmt1->bind_result($name, $details, $quantity, $Price, $img, $imgtype);
+
+        // Fetch the result
+        if ($stmt1->fetch()) {
+            // Variables are now set: $name, $details, $quantity, $Price, $img, $imgtype
+        } else {
+            $name = $details = "Unknown";
+            $quantity = $Price = 0;
+            $img = $imgtype = null;
+        }
+
+        $stmt1->close();
+    }
 }
-
+$conn->close();
 ?>

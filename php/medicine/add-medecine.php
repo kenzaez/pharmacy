@@ -9,7 +9,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $price = $_POST['price'];
     $quantity = $_POST['stock'];
     
-    // Check for image upload errors
+    
+    
     if ($_FILES['image']['error'] === UPLOAD_ERR_OK) {
       
         $imageType = mime_content_type($_FILES['image']['tmp_name']);
@@ -25,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ssiibs", $productName, $productDetails, $quantity, $price, $imageData, $imageType);
        
-        // Send the image data
+
         $stmt->send_long_data(4, $imageData); 
         
         if ($stmt->execute()) {

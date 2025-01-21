@@ -3,6 +3,14 @@
 require_once '../connect.php';
 session_start();
 
+// SETTING A COOKIE TO COUNT THE NUMBER OF VISITORS ON THE PAGE
+if (isset($_COOKIE['medicine'])) {
+    $medicineCount = $_COOKIE['medicine'] + 1;
+} else {
+    $medicineCount = 1;
+}
+setcookie("medicine", $medicineCount, time() + 365 * 24 * 60 * 60, "/");
+// HERE WE ARE SELECTING ALL THE MEDICINES FROM THE DATABASE
 
 $sql = 'SELECT productID, productName, productDetails, quantity, Price, productIMG, productIMGType FROM Products';
 
@@ -11,13 +19,13 @@ $stmt = $conn->stmt_init();
 if ($stmt->prepare($sql)) {
     $stmt->execute();
     
-    // Bind the results
+    
     $stmt->bind_result($productID, $productName, $productDetails, $quantity, $Price, $productIMG, $productIMGType);
     
-    // Store result (optional, only needed if you check `num_rows`)
+  
     $stmt->store_result();
 
-    // Check for errors
+
     if ($stmt->error) {
         echo $stmt->errno . ": " . $stmt->error;
         exit();
@@ -25,14 +33,6 @@ if ($stmt->prepare($sql)) {
     
 } else {
     echo "SQL preparation error: " . $conn->error;
-}
-//COOKIEEESS 
-if (!isset($_COOKIE['pageViews'])) {
-    setcookie('pageViews', 1, time() + (30 * 24 * 60 * 60), "/"); 
-    $pageViews = 1;
-} else {
-    $pageViews = $_COOKIE['pageViews'] + 1;
-    setcookie('pageViews', $pageViews, time() + (30 * 24 * 60 * 60), "/"); 
 }
 ?>
 
@@ -58,7 +58,8 @@ if (!isset($_COOKIE['pageViews'])) {
     <!-- including navigation bar -->
     <?php    include '../nav-bar.php'; ?>
     <div class="container mt-4">
-        <!-- MESSAGE SHOWN AFTER DELETING A MEDICINE -->
+       
+    <!-- MESSAGE SHOWN AFTER DELETING A MEDICINE -->
         <?php if (isset($_SESSION['deleteMessage'])): ?>
         <div class="alert alert-info" id="deleteMessage">
             <?= htmlspecialchars($_SESSION['deleteMessage']) ?>
@@ -74,6 +75,7 @@ if (!isset($_COOKIE['pageViews'])) {
                 <i class="fas fa-plus"></i> Add Medicine
             </button>
             <?php endif; ?>
+            
 
             <!-- THE SEACRH BAR -->
             <form action="" method="GET">
@@ -138,7 +140,7 @@ if (!isset($_COOKIE['pageViews'])) {
                     </td>
 
                     <td>
-                        <?php if ($_SESSION['role'] === 'pharmacist'): ?>
+                        <?php if ($_SESSION['role'] === "pharmacist"): ?>
                         <button class='btn-view btn btn-outline-primary'><i class='fas fa-eye'></i></button>
                         <?php else: ?>
                         <button class='btn-view btn btn-outline-primary'><i class='fas fa-eye'></i></button>
@@ -152,8 +154,8 @@ if (!isset($_COOKIE['pageViews'])) {
                         <?php endif; ?>
                     </td>
                 </tr>
-                <?php endwhile; 
-    else: ?>
+                <?php endwhile; ?>
+               <?php else: ?>
                 <tr>
                     <td colspan="7" class="text-center">No medicines found.</td>
                 </tr>
@@ -187,7 +189,7 @@ if (!isset($_COOKIE['pageViews'])) {
                 <?php endif; ?>
 
                 <form method="POST" action="add-medecine.php" enctype="multipart/form-data">
-                    <img src="grandmedicine.png" width="150px" height="150px" alt="">
+                    <img src="../../grandmedicine.png" width="150px" height="150px" alt="">
                     <div class="form-group">
                         <input type="text" name="name" class="form-control" placeholder="Medicine Name" required>
                     </div>
@@ -219,7 +221,7 @@ if (!isset($_COOKIE['pageViews'])) {
     <div id="editPopupForm" class="popup-form">
 
         <div class="form-container">
-            <img src="../grandmedicine.png" width="150px" height="150px" alt="">
+            <img src="../../grandmedicine.png" width="150px" height="150px" alt="">
             <span id="closeEditFormBtn" class="close-btn">&times;</span>
             <form method="POST" action="edit-medecine.php">
                 <input type="hidden" name="productID" id="editProductID" value="">
@@ -270,12 +272,12 @@ if (!isset($_COOKIE['pageViews'])) {
 
 
     <script>
-    // Get elements for add form
+   
     const openFormBtn = document.getElementById('openFormBtn');
     const closeFormBtn = document.getElementById('closeFormBtn');
     const popupForm = document.getElementById('popupForm');
-    // Get elements for edit form
-    const openEditFormBtns = document.querySelectorAll('.openEditFormBtn'); // Modify to handle multiple edit buttons
+
+    const openEditFormBtns = document.querySelectorAll('.openEditFormBtn');
     const closeEditFormBtn = document.getElementById('closeEditFormBtn');
     const editPopupForm = document.getElementById('editPopupForm');
 
