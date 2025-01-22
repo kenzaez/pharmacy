@@ -11,15 +11,15 @@ require_once 'connect.php';
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Dashboard | Bootstrap Simple Admin Template</title>
-    <link href="assets/vendor/fontawesome/css/fontawesome.min.css" rel="stylesheet">
-    <link href="assets/vendor/fontawesome/css/solid.min.css" rel="stylesheet">
-    <link href="assets/vendor/fontawesome/css/brands.min.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/css/master.css" rel="stylesheet">
-    <link href="assets/vendor/flagiconcss/css/flag-icon.min.css" rel="stylesheet">
+    <title>Navigation bar</title>
+    <link href="../assets/vendor/fontawesome/css/fontawesome.min.css" rel="stylesheet">
+    <link href="../assets/vendor/fontawesome/css/solid.min.css" rel="stylesheet">
+    <link href="../assets/vendor/fontawesome/css/brands.min.css" rel="stylesheet">
+    <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/css/master.css" rel="stylesheet">
+    <link href="../assets/vendor/flagiconcss/css/flag-icon.min.css" rel="stylesheet">
 </head>
-<!-- changeeeee 33 -->
+
 <body>
     <div class="wrapper">
         <nav id="sidebar" class="active">
@@ -35,16 +35,15 @@ require_once 'connect.php';
                     <a href="forms.html"><i class="fas fa-file-alt"></i> Forms</a>
 
 
-          <!-- change -->
                     <a href="../medicine/medicine.php"><i class="fas fa-tablets"></i>Medicine</a>
 
 
             </li>
                 <li>
-                    <a href="sales.php"><i class="fas fa-money-check-dollar"></i> Sales </a>
+                    <a href="../my_php/sales/sales.php"><i class="fas fa-money-check-dollar"></i> Sales </a>
                 </li>
                 <li>
-                    <a href="orders.php"><i class="fas fa-truck"></i>Orders </a>
+                    <a href="../my_php/orders/orders.php"><i class="fas fa-truck"></i>Orders </a>
                 </li>
                 <?php if ($_SESSION['role'] != 'pharmacist'): ?>
                 <li>
@@ -87,7 +86,7 @@ require_once 'connect.php';
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end nav-link-menu">
                                     <ul class="nav-list">
-                                        <li><a href="login.php" class="dropdown-item"><i class="fas fa-address-card"></i> switch user </a></li>
+                                        <li><a href="../my_php/login.php" class="dropdown-item"><i class="fas fa-address-card"></i> switch user </a></li>
                                       
                                         <li><a href="logout.php" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                                     </ul>

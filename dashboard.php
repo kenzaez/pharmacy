@@ -20,7 +20,7 @@ require_once 'php/connect.php';
     <link href="assets/css/master.css" rel="stylesheet">
     <link href="assets/vendor/flagiconcss/css/flag-icon.min.css" rel="stylesheet">
 </head>
-<!-- changeeeee 33 -->
+
 <body>
     <div class="wrapper">
         <nav id="sidebar" class="active">
@@ -36,19 +36,18 @@ require_once 'php/connect.php';
                     <a href="forms.html"><i class="fas fa-file-alt"></i> Forms</a>
 
 
-          <!-- change -->
-                    <a href="php/medicine.php"><i class="fas fa-tablets"></i>Medicine</a>
+                    <a href="php/medicine/medicine.php"><i class="fas fa-tablets"></i>Medicine</a>
 
 
             </li>
                 <li>
-                    <a href="sales.php"><i class="fas fa-money-check-dollar"></i> Sales </a>
+                    <a href="my_php/sales/sales.php"><i class="fas fa-money-check-dollar"></i> Sales </a>
                 </li>
                 <li>
-                    <a href="orders.php"><i class="fas fa-truck"></i>Orders </a>
+                    <a href="my_php/orders/orders.php"><i class="fas fa-truck"></i>Orders </a>
                 </li>
                 <li>
-                    <a href="php/staff.php"><i class="fas fa-user-tie"></i> Staff </a>
+                    <a href="php/staff/staff.php"><i class="fas fa-user-tie"></i> Staff </a>
 </li>
                 <li><a href="" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
