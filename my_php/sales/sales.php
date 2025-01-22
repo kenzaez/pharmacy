@@ -302,7 +302,6 @@ setcookie("sales", $visitorCount, time() + 365 * 24 * 60 * 60, "/");
     <script src="../../assets/vendor/datatables/datatables.min.js"></script>
     <script src="../../assets/js/initiate-datatables.js"></script>
     <script src="../../assets/js/script.js"></script>
-<!--     <script src="../js/sales.js"></script>
- --></body>
+</body>
 
 </html>
