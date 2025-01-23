@@ -132,7 +132,6 @@ setcookie("sales", $visitorCount, time() + 365 * 24 * 60 * 60, "/");
                                         popup.style.display = 'block';
                                     }
                                 });
-                                
                             </script>
                         </div>
                         <div class="popup" id="addSalePopup">
@@ -217,7 +216,7 @@ setcookie("sales", $visitorCount, time() + 365 * 24 * 60 * 60, "/");
                                 </div>
                                 <button class="allButtons" type="submit" name="submit" id="addsale">Save</button>
                             </form>
-                            <button type="button" class="allButtons" id="closeAddSaleBtn" >Close</button>
+                            <button type="button" class="allButtons" id="closeAddSaleBtn">Close</button>
                             <script>
                                 document.getElementById('closeAddSaleBtn').addEventListener('click', function() {
                                     const popup = document.getElementById('addSalePopup');

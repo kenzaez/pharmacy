@@ -10,42 +10,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $saleDate = $_POST['saleDate'];
     $transaction = $_POST['addToTransaction'];
 
-    $sql1 = "INSERT INTO transactions (saleID, productName, productPrice, productQuantity, totalAmount, saleDate) VALUES (?, ?, ?, ?, ?, ?)";
-
+    $sql1 = "INSERT INTO transactions (saleID, productName, productPrice, productQuantity, totalAmount) VALUES (?, ?, ?, ?, ?)";
     $sql2 = "INSERT INTO sales (saleID, quantity, saleDate, totalAmount) VALUES (?, ?, ?, ?)";
 
-    
-        // Insert into cart
+    if (isset($transaction) && is_array($transaction)) {
         foreach ($transaction as $item) {
             $item = explode(',', $item);
+
+            // Validate and cast input values
+            if (count($item) < 4) {
+                echo "Error: Invalid transaction format.";
+                exit;
+            }
+
             $productName = $item[0];
-            $productPrice = $item[1];
-            $productQuantity = $item[2];
-            $totalAmount = $item[3];
+            $productPrice = (float)$item[1];
+            $productQuantity = (int)$item[2];
+            $totalAmount = (float)$item[3];
+
             $total += $totalAmount;
             $quantity += $productQuantity;
 
-            $stmt = $conn->prepare($sql1);
-            $stmt->bind_param("isdids", $saleID, $productName, $productPrice, $productQuantity, $totalAmount, $saleDate);
-
-            if (!$stmt->execute()) {
-                echo "Error: " . $stmt->error;
+            // Prepare and bind parameters for transactions
+            $stmt1 = $conn->prepare($sql1);
+            if ($stmt1) {
+                $stmt1->bind_param("isddi", $saleID, $productName, $productPrice, $productQuantity, $totalAmount);
+                if (!$stmt1->execute()) {
+                    echo "Error: " . $stmt1->error;
+                    exit;
+                }
+                $stmt1->close();
+            } else {
+                echo "Error preparing statement for transactions: " . $conn->error;
                 exit;
             }
-            $stmt->close();
         }
 
-        // Insert into sales
-
-        $stmt = $conn->prepare($sql2);
-        $stmt->bind_param("iisd", $saleID, $quantity, $saleDate, $total);
-        if (!$stmt->execute()) {
-            echo "Error: " . $stmt->error;
+        // Prepare and bind parameters for sales
+        $stmt2 = $conn->prepare($sql2);
+        if ($stmt2) {
+            $stmt2->bind_param("iisd", $saleID, $quantity, $saleDate, $total);
+            if (!$stmt2->execute()) {
+                echo "Error: " . $stmt2->error;
+                exit;
+            }
+            $stmt2->close();
+        } else {
+            echo "Error preparing statement for sales: " . $conn->error;
             exit;
         }
-    $stmt->close();
-}
+    } else {
+        echo "Error: Invalid transaction data.";
+        exit;
+    }
 
-$conn->close();
-header("Location: sales.php");
-exit();
+    $conn->close();
+    header("Location: sales.php");
+    exit();
+}
+?>
