@@ -109,7 +109,7 @@ setcookie("sales", $visitorCount, time() + 365 * 24 * 60 * 60, "/");
 
 <body>
     <!-- Including the navigation bar -->
-    <?php include '../../php/nav-bar.php'; ?>
+    <?php include '../nav-bar.php'; ?>
     <!-- end of navbar navigation -->
     <div class="content">
         <div class="container">

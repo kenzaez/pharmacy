@@ -1,52 +1,24 @@
-<?php
-
-require_once 'connect.php'; 
-
-
-?>
-<!doctype html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Dashboard | Bootstrap Simple Admin Template</title>
-    <link href="assets/vendor/fontawesome/css/fontawesome.min.css" rel="stylesheet">
-    <link href="assets/vendor/fontawesome/css/solid.min.css" rel="stylesheet">
-    <link href="assets/vendor/fontawesome/css/brands.min.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/css/master.css" rel="stylesheet">
-    <link href="assets/vendor/flagiconcss/css/flag-icon.min.css" rel="stylesheet">
-</head>
-<!-- changeeeee 33 -->
-
-<body>
-    <div class="wrapper">
+<div class="wrapper">
         <nav id="sidebar" class="active">
-       
-                <img src="../../grandmedicine.png" class="app-logo" witdth="150px" height="150px" style="margin-left: 30px;">
-        
+        <img src="grandmedicine.png" class="app-logo" witdth="150px" height="150px" style="margin-left: 30px;">
             <ul class="list-unstyled components text-secondary">
-                
                 <li>
-                    <a href="../../dashboard.php"><i class="fas fa-home"></i> Dashboard</a>
+                    <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
                 </li>
                 <li>
-                    <a href="../medicine/medicine.php"><i class="fas fa-tablets"></i>Medicine</a>
+                    <!-- change -->
+                    <a href="php/medicine/medicine.php"><i class="fas fa-tablets"></i>Medicine</a>
                 </li>
                 <li>
-                    <a href="../../my_php/sales/sales.php"><i class="fas fa-money-check-dollar"></i> Sales </a>
+                    <a href="my_php/sales/sales.php"><i class="fas fa-money-check-dollar"></i> Sales </a>
                 </li>
                 <li>
-                    <a href="../../my_php/orders/orders.php"><i class="fas fa-truck"></i>Orders </a>
+                    <a href="my_php/orders/orders.php"><i class="fas fa-truck"></i>Orders </a>
                 </li>
-                <?php if ($_SESSION['role'] != 'pharmacist'): ?>
                 <li>
-                    <a href="../staff/staff.php"><i class="fas fa-user-tie"></i> Staff </a>
+                    <a href="php/staff/staff.php"><i class="fas fa-user-tie"></i> Staff </a>
                 </li>
-                <?php endif; ?>
-                <li><a href="../logout.php" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                <li><a href="logout.php" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </nav>
         <div id="body" class="active">
@@ -57,7 +29,7 @@ require_once 'connect.php';
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="nav navbar-nav ms-auto">
-                    <li class="nav-item dropdown">
+                        <li class="nav-item dropdown">
                             <div class="nav-dropdown">
                                 <a href="#" id="nav1" class="nav-item nav-link dropdown-toggle text-secondary"
                                     data-bs-toggle="dropdown" aria-expanded="false">
@@ -66,15 +38,15 @@ require_once 'connect.php';
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end nav-link-menu" aria-labelledby="nav1">
                                     <ul class="nav-list">
-                                        <li><a href="../staff/staff.php" class="dropdown-item"><i class="fas fa-user-tie"></i> staff</a>
+                                        <li><a href="php/staff/staff.php" class="dropdown-item"><i class="fas fa-user-tie"></i> staff</a>
                                         </li>
                                         <div class="dropdown-divider"></div>
-                                        <li><a href="../medicine/medicine.php" class="dropdown-item"><i class="fas fa-tablets"></i> medicine</a></li>
+                                        <li><a href="php/medicine/medicine.php" class="dropdown-item"><i class="fas fa-tablets"></i> medicine</a></li>
                                         <div class="dropdown-divider"></div>
-                                        <li><a href="../../my_php/orders.php" class="dropdown-item"><i class="fas fa-truck"></i>
+                                        <li><a href="my_php/orders.php" class="dropdown-item"><i class="fas fa-truck"></i>
                                                orders</a></li>
                                         <div class="dropdown-divider"></div>
-                                        <li><a href="../../my_php/sales.php" class="dropdown-item"><i class="fas fa-money-check-dollar"></i>
+                                        <li><a href="my_php/sales.php" class="dropdown-item"><i class="fas fa-money-check-dollar"></i>
                                                 sales</a></li>
                                     </ul>
                                 </div>
@@ -89,10 +61,10 @@ require_once 'connect.php';
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end nav-link-menu">
                                     <ul class="nav-list">
-                                        <li><a href="../../login.php" class="dropdown-item"><i
+                                        <li><a href="login.php" class="dropdown-item"><i
                                                     class="fas fa-address-card"></i> switch user </a></li>
 
-                                        <li><a href="../../logout.php" class="dropdown-item"><i
+                                        <li><a href="logout.php" class="dropdown-item"><i
                                                     class="fas fa-sign-out-alt"></i> Logout</a></li>
                                     </ul>
                                 </div>

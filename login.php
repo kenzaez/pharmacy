@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../php/connect.php'; // Include the database connection
+require_once 'php/connect.php'; 
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if ($stmt->num_rows > 0) {
             $stmt->bind_result($userid, $hashed_password, $fullname, $userRole);
-            $stmt->fetch();
+        $stmt->fetch();
 
             // Verify password
             if (password_verify($password, $hashed_password)) {
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             } else {
                 $error = "Invalid password.";
             }
-        } else {
+         } else {
             $error = "No user found with this username.";
         }
         $stmt->close();
@@ -54,12 +54,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="card">
                 <div class="card-body text-center">
                     <div class="mb-4">
-                        <img class="brand" src="logo.jpeg" alt="Logo" width="30%" height="30%">
+                        <img class="brand" src="grandmedicine.png" alt="Logo" width="40%" height="40%">
                     </div>
                     <h6 class="mb-4 text-muted">Login to your account</h6>
+
+                    <!-- affichage d'un message d'erreur en cas d'erreur de connexion -->
                     <?php if ($error): ?>
                         <div id="error" class="alert alert-danger"><?php echo $error; ?></div>
                     <?php endif; ?>
+                   
                     <form action="login.php" method="POST">
                         <div class="mb-3 text-start">
                             <label for="username" class="form-label">Username</label>
@@ -68,12 +71,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <div class="mb-3 text-start">
                             <label for="password" class="form-label">Password</label>
                             <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
-                        </div>
-                        <div class="mb-3 text-start">
-                            <div class="form-check">
-                                <input class="form-check-input" name="remember" type="checkbox" value="" id="check1">
-                                <label class="form-check-label" for="check1">Remember me on this device</label>
-                            </div>
                         </div>
                         <button class="btn btn-primary mb-4" style="width:100%">Login</button>
                     </form>
